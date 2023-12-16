@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using BenchmarkDotNet.Attributes;
+﻿using BenchmarkDotNet.Attributes;
 using Bogus;
 using Runner.Cluster;
 using Runner.Cluster.Parameters.EventStorage;
@@ -14,12 +13,10 @@ public abstract class RaiseEventBenchmark
     [Params(1, 100, 1_000, Priority = -100)]
     public int NumEvents { get; set; }
     
-    // [ParamsAllValues(Priority = 100)]
-    [Params(true, Priority = 100)]
+    [ParamsAllValues(Priority = 100)]
     public bool ConfirmEachEvent { get; set; }
     
-    // [ParamsAllValues(Priority = 101)]
-    [Params(false, Priority = 101)]
+    [ParamsAllValues(Priority = 101)]
     public bool Reentrant { get; set; }
 
     protected BenchmarkCluster TestCluster { get; set; } = null!;
@@ -63,21 +60,14 @@ public abstract class RaiseEventBenchmark
 
         public IEnumerable<IGrainStorageProvider> GrainStorageProviders() =>
         [
-            // new MemoryGrainStorageProvider(),
-            // new RedisGrainStorage(),
+            new MemoryGrainStorageProvider(),
+            new RedisGrainStorage(),
             new PostgresGrainStorage()
         ];
         
         [GlobalSetup]
         public async Task GlobalSetup()
         {
-            Debugger.Launch();
-
-            while (!Debugger.IsAttached)
-            {
-                await Task.Delay(100);
-            }
-            
             TestCluster = await BenchmarkClusterFactory.CreateTestCluster(
                 LogConsistencyProvider,
                 StorageProvider
