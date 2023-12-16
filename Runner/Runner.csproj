@@ -11,12 +11,24 @@
         <PackageReference Include="BenchmarkDotNet" Version="0.13.11" />
         <PackageReference Include="Bogus" Version="34.0.2" />
         <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="7.2.4" />
+        <PackageReference Include="Microsoft.Orleans.Persistence.Redis" Version="7.2.4" />
         <PackageReference Include="Microsoft.Orleans.TestingHost" Version="7.2.4" />
         <PackageReference Include="Npgsql" Version="8.0.1" />
         <PackageReference Include="Orleans.EventSourcing.EventStorage.EventStore" Version="0.0.3" />
+        <PackageReference Include="Orleans.EventSourcing.EventStorage.Marten" Version="0.0.1" />
         <PackageReference Include="Orleans.EventSourcing.Snapshot" Version="7.2.1" />
         <PackageReference Include="Testcontainers.EventStoreDb" Version="3.6.0" />
         <PackageReference Include="Testcontainers.PostgreSql" Version="3.6.0" />
+        <PackageReference Include="Testcontainers.Redis" Version="3.6.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="Cluster\Parameters\GrainStorage\Scripts\Postgres\00-PostgreSQL-Main.sql">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>       
+        <None Update="Cluster\Parameters\GrainStorage\Scripts\Postgres\01-PostgreSQL-Persistence.sql">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

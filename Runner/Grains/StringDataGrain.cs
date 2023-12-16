@@ -1,4 +1,5 @@
-﻿using Orleans.EventSourcing;
+﻿using Orleans.Concurrency;
+using Orleans.EventSourcing;
 
 namespace Runner.Grains;
 
@@ -19,6 +20,7 @@ public interface IStringDataGrain : IGrainWithGuidKey
     public ValueTask Update(string value, bool confirmEvents);
     public ValueTask<string> GetCurrentValue();
     public ValueTask Deactivate();
+    public Task ConfirmEvents();
 }
 
 public class StringDataGrain : JournaledGrain<StringDataGrainState>, IStringDataGrain
@@ -43,4 +45,9 @@ public class StringDataGrain : JournaledGrain<StringDataGrainState>, IStringData
         DeactivateOnIdle();
         return ValueTask.CompletedTask;
     }
+
+    Task IStringDataGrain.ConfirmEvents() => ConfirmEvents();
 }
+
+[Reentrant]
+public class StringDataGrain_Reentrant : StringDataGrain;

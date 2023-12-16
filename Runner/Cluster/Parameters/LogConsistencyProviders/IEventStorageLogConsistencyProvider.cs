@@ -1,0 +1,3 @@
+﻿namespace Runner.Cluster.Parameters.LogConsistencyProviders;
+
+public interface IEventStorageLogConsistencyProvider : ILogConsistencyProvider;
