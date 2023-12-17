@@ -59,7 +59,7 @@ public abstract class RaiseEventBenchmark
         }
     }
     
-    public class GrainStorageBasedProviders : RaiseEventBenchmark
+    public class RaiseEventBenchmark_GrainStorageBasedProviders : RaiseEventBenchmark
     {
         [ParamsSource(nameof(LogConsistencyProviders))]
         public override ILogConsistencyProvider LogConsistencyProvider { get; set; } = null!;
@@ -81,7 +81,7 @@ public abstract class RaiseEventBenchmark
         ];
     }
     
-    public class EventStorageBasedProviders : RaiseEventBenchmark
+    public class RaiseEventBenchmark_EventStorageBasedProviders : RaiseEventBenchmark
     {
         [ParamsSource(nameof(LogConsistencyProviders))]
         public override ILogConsistencyProvider LogConsistencyProvider { get; set; } = null!;
