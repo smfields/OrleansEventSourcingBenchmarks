@@ -10,16 +10,10 @@ public class EventStoreEventStorageProvider : ClusterParameter, IEventStoragePro
 
     public override async ValueTask Initialize()
     {
-        Container = new EventStoreDbBuilder().Build();
+        Container = new EventStoreDbBuilder()
+            .WithImage("eventstore/eventstore:lts")
+            .Build();
         await Container.StartAsync();
-    }
-
-    public override void ConfigureClient(IClientBuilder clientBuilder)
-    {
-        clientBuilder.Configure<MessagingOptions>(options =>
-        {
-            options.ResponseTimeout = TimeSpan.FromMinutes(2);
-        });
     }
 
     public override void ConfigureSilo(ISiloBuilder siloBuilder)

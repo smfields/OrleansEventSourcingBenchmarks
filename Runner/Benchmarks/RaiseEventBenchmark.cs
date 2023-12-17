@@ -10,7 +10,7 @@ namespace Runner.Benchmarks;
 
 public abstract class RaiseEventBenchmark
 {
-    [Params(1, 100, 1_000, Priority = -100)]
+    [Params(1, 100, 1_000, 10_000, Priority = -100)]
     public int NumEvents { get; set; }
     
     [ParamsAllValues(Priority = 100)]
@@ -90,7 +90,7 @@ public abstract class RaiseEventBenchmark
 
         public IEnumerable<IEventStorageProvider> GrainStorageProviders() =>
         [
-            // new MemoryEventStorageProvider(),
+            new MemoryEventStorageProvider(),
             new EventStoreEventStorageProvider(),
             new MartenEventStorageProvider()
         ];

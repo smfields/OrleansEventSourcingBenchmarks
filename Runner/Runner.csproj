@@ -14,7 +14,7 @@
         <PackageReference Include="Microsoft.Orleans.Persistence.Redis" Version="7.2.4" />
         <PackageReference Include="Microsoft.Orleans.TestingHost" Version="7.2.4" />
         <PackageReference Include="Npgsql" Version="8.0.1" />
-        <PackageReference Include="Orleans.EventSourcing.EventStorage.EventStore" Version="0.0.3" />
+        <PackageReference Include="Orleans.EventSourcing.EventStorage.EventStore" Version="0.0.4" />
         <PackageReference Include="Orleans.EventSourcing.EventStorage.Marten" Version="0.0.1" />
         <PackageReference Include="Orleans.EventSourcing.Snapshot" Version="7.2.1" />
         <PackageReference Include="Testcontainers.EventStoreDb" Version="3.6.0" />
