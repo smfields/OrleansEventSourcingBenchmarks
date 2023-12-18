@@ -20,15 +20,12 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
+
+    - name: Install .NET WASM Build Tools
+      run: dotnet workload install wasm-tools
       
     - name: Publish project
-      run: dotnet publish ./ResultsWebViewer/ResultsWebViewer.csproj -o release --nologo
-
-    - name: Update base-tag
-      run: sed -i 's/<base href="\/" \/>/<base href="\/OrleansEventSourcingBenchmarks\/" \/>/g' release/wwwroot/index.html
-      
-    - name: Add .nojekyll file
-      run: touch release/wwwroot/.nojekyll
+      run: dotnet publish ./ResultsWebViewer/ResultsWebViewer.csproj -o release -p:GHPages=true --nologo
 
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@3.7.1
