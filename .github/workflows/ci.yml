@@ -38,7 +38,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-pages-artifact@v2
       with:
-        path: 'release'
+        path: 'release/wwwroot'
 
   deploy:
     needs: build
