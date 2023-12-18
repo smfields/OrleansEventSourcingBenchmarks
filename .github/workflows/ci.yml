@@ -36,7 +36,7 @@ jobs:
       run: dotnet publish ./ResultsWebViewer/ResultsWebViewer.csproj -o release -p:GHPages=true --nologo
 
     - name: Upload artifacts
-      uses: actions/upload-page-artifact@v2
+      uses: actions/upload-pages-artifact@v2
       with:
         path: 'release'
 
