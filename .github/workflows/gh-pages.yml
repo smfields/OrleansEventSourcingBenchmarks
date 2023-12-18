@@ -1,0 +1,38 @@
+name: Deploy Results Viewer to Github Pages
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  Configuration: Release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+      
+    - name: Publish project
+      run: dotnet publish ./ResultsWebViewer/ResultsWebViewer.csproj -o release --nologo
+
+    - name: Update base-tag
+      run: sed -i 's/<base href="\/" \/>/<base href="\/OrleansEventSourcingBenchmarks\/" \/>/g' release/wwwroot/index.html
+      
+    - name: Add .nojekyll file
+      run: touch release/wwwroot/.nojekyll
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@3.7.1
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: release/wwwroot
