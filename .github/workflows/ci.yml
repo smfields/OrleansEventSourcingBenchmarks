@@ -6,6 +6,53 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  Configuration: Release
+
 jobs:
-  build-and-test:
-    uses: ./.github/workflows/build.yml
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Install .NET WASM Build Tools
+      run: dotnet workload install wasm-tools
+      
+    - name: Build
+      run: dotnet build
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+
+    - name: Publish
+      run: dotnet publish ./ResultsWebViewer/ResultsWebViewer.csproj -o release -p:GHPages=true --nologo
+
+    - name: Upload artifacts
+      uses: actions/upload-page-artifact@v2
+      with:
+        path: 'release'
+
+  deploy:
+    needs: build
+
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v3
