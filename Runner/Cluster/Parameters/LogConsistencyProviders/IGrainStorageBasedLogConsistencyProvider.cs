@@ -1,3 +1,0 @@
-﻿namespace Runner.Cluster.Parameters.LogConsistencyProviders;
-
-public interface IGrainStorageBasedLogConsistencyProvider : ILogConsistencyProvider;

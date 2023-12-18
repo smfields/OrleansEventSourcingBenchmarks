@@ -1,12 +1,12 @@
 ﻿using Testcontainers.PostgreSql;
 
-namespace Runner.Cluster.Parameters.GrainStorage;
+namespace Runner.Parameters.GrainStorage;
 
-public class PostgresGrainStorage : ClusterParameter, IGrainStorageProvider
+public class PostgresGrainStorage : IClusterParameter
 {
     private PostgreSqlContainer? Container { get; set; }
     
-    public override async ValueTask Initialize()
+    public async ValueTask Initialize()
     {
         Container = new PostgreSqlBuilder()
             .WithResourceMapping("Cluster/Parameters/GrainStorage/Scripts/Postgres", "docker-entrypoint-initdb.d")
@@ -15,7 +15,7 @@ public class PostgresGrainStorage : ClusterParameter, IGrainStorageProvider
         await Container.StartAsync();
     }
 
-    public override void ConfigureSilo(ISiloBuilder siloBuilder)
+    public void ConfigureSilo(ISiloBuilder siloBuilder)
     {
         siloBuilder.AddAdoNetGrainStorageAsDefault(cfg =>
         {
@@ -24,7 +24,7 @@ public class PostgresGrainStorage : ClusterParameter, IGrainStorageProvider
         });
     }
     
-    public override async ValueTask DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         if (Container is not null)
         {

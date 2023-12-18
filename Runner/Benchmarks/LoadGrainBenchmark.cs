@@ -1,11 +1,11 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Bogus;
 using Runner.Cluster;
-using Runner.Cluster.Parameters;
-using Runner.Cluster.Parameters.EventStorage;
-using Runner.Cluster.Parameters.GrainStorage;
-using Runner.Cluster.Parameters.LogConsistencyProviders;
 using Runner.Grains;
+using Runner.Parameters;
+using Runner.Parameters.EventStorage;
+using Runner.Parameters.GrainStorage;
+using Runner.Parameters.LogConsistencyProviders;
 
 namespace Runner.Benchmarks;
 
@@ -14,9 +14,9 @@ public abstract class LoadGrainBenchmark
     [Params(1, 100, 1_000, Priority = -100)]
     public int NumEvents { get; set; }
     
-    public abstract ILogConsistencyProvider LogConsistencyProvider { get; set; }
+    public abstract IClusterParameter LogConsistencyProvider { get; set; }
     
-    public abstract ClusterParameter StorageProvider { get; set; }
+    public abstract IClusterParameter StorageProvider { get; set; }
 
     private Guid ExistingGrainId { get; } = Guid.NewGuid();
     private BenchmarkCluster TestCluster { get; set; } = null!;
@@ -47,21 +47,21 @@ public abstract class LoadGrainBenchmark
         await grain.Deactivate();
     }
     
-    public class LoadGrainBenchmark_GrainStorageBasedProviders : LoadGrainBenchmark
+    public class GrainStorageBasedProviders : LoadGrainBenchmark
     {
         [ParamsSource(nameof(LogConsistencyProviders))]
-        public override ILogConsistencyProvider LogConsistencyProvider { get; set; } = null!;
+        public override IClusterParameter LogConsistencyProvider { get; set; } = null!;
 
-        public IEnumerable<IGrainStorageBasedLogConsistencyProvider> LogConsistencyProviders() => 
+        public IEnumerable<IClusterParameter> LogConsistencyProviders() => 
         [
             new LogStorageLogConsistencyProvider(),
             new StateStorageLogConsistencyProvider()
         ];
 
         [ParamsSource(nameof(GrainStorageProviders))]
-        public override ClusterParameter StorageProvider { get; set; } = null!;
+        public override IClusterParameter StorageProvider { get; set; } = null!;
 
-        public IEnumerable<IGrainStorageProvider> GrainStorageProviders() =>
+        public IEnumerable<IClusterParameter> GrainStorageProviders() =>
         [
             new MemoryGrainStorageProvider(),
             new RedisGrainStorage(),
@@ -69,20 +69,20 @@ public abstract class LoadGrainBenchmark
         ];
     }
     
-    public class LoadGrainBenchmark_EventStorageBasedProviders : LoadGrainBenchmark
+    public class EventStorageBasedProviders : LoadGrainBenchmark
     {
         [ParamsSource(nameof(LogConsistencyProviders))]
-        public override ILogConsistencyProvider LogConsistencyProvider { get; set; } = null!;
+        public override IClusterParameter LogConsistencyProvider { get; set; } = null!;
 
-        public IEnumerable<IEventStorageLogConsistencyProvider> LogConsistencyProviders() => 
+        public IEnumerable<IClusterParameter> LogConsistencyProviders() => 
         [
             new EventStorageLogConsistencyProvider()
         ];
 
         [ParamsSource(nameof(GrainStorageProviders))]
-        public override ClusterParameter StorageProvider { get; set; } = null!;
+        public override IClusterParameter StorageProvider { get; set; } = null!;
 
-        public IEnumerable<IEventStorageProvider> GrainStorageProviders() =>
+        public IEnumerable<IClusterParameter> GrainStorageProviders() =>
         [
             new MemoryEventStorageProvider(),
             new EventStoreEventStorageProvider(),

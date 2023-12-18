@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Orleans.TestingHost;
-using Runner.Cluster.Parameters;
+using Runner.Parameters;
 
 namespace Runner.Cluster;
 

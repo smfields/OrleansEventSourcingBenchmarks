@@ -1,19 +1,19 @@
 ﻿using StackExchange.Redis;
 using Testcontainers.Redis;
 
-namespace Runner.Cluster.Parameters.GrainStorage;
+namespace Runner.Parameters.GrainStorage;
 
-public class RedisGrainStorage : ClusterParameter, IGrainStorageProvider
+public class RedisGrainStorage : IClusterParameter
 {
     private RedisContainer? Container { get; set; }
     
-    public override async ValueTask Initialize()
+    public async ValueTask Initialize()
     {
         Container = new RedisBuilder().Build();
         await Container.StartAsync();
     }
 
-    public override void ConfigureSilo(ISiloBuilder siloBuilder)
+    public void ConfigureSilo(ISiloBuilder siloBuilder)
     {
         siloBuilder.AddRedisGrainStorageAsDefault(cfg =>
         {
@@ -21,7 +21,7 @@ public class RedisGrainStorage : ClusterParameter, IGrainStorageProvider
         });
     }
     
-    public override async ValueTask DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         if (Container is not null)
         {

@@ -1,20 +1,18 @@
-﻿using EventStore.Client;
-using Testcontainers.EventStoreDb;
-using Testcontainers.PostgreSql;
+﻿using Testcontainers.PostgreSql;
 
-namespace Runner.Cluster.Parameters.EventStorage;
+namespace Runner.Parameters.EventStorage;
 
-public class MartenEventStorageProvider : ClusterParameter, IEventStorageProvider
+public class MartenEventStorageProvider : IClusterParameter
 {
     private PostgreSqlContainer? Container { get; set; }
 
-    public override async ValueTask Initialize()
+    public async ValueTask Initialize()
     {
         Container = new PostgreSqlBuilder().Build();
         await Container.StartAsync();
     }
     
-    public override void ConfigureSilo(ISiloBuilder siloBuilder)
+    public void ConfigureSilo(ISiloBuilder siloBuilder)
     {
         siloBuilder.AddMartenEventStorageAsDefault(cfg =>
         {
@@ -22,7 +20,7 @@ public class MartenEventStorageProvider : ClusterParameter, IEventStorageProvide
         });
     }
 
-    public override async ValueTask DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         if (Container is not null)
         {
@@ -31,8 +29,5 @@ public class MartenEventStorageProvider : ClusterParameter, IEventStorageProvide
         }
     }
 
-    public override string ToString()
-    {
-        return "Marten";
-    }
+    public override string ToString() => "Marten";
 }

@@ -1,11 +1,11 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Bogus;
 using Runner.Cluster;
-using Runner.Cluster.Parameters;
-using Runner.Cluster.Parameters.EventStorage;
-using Runner.Cluster.Parameters.GrainStorage;
-using Runner.Cluster.Parameters.LogConsistencyProviders;
 using Runner.Grains;
+using Runner.Parameters;
+using Runner.Parameters.EventStorage;
+using Runner.Parameters.GrainStorage;
+using Runner.Parameters.LogConsistencyProviders;
 
 namespace Runner.Benchmarks;
 
@@ -20,13 +20,12 @@ public abstract class RaiseEventBenchmark
     [ParamsAllValues(Priority = 101)]
     public bool Reentrant { get; set; }
     
-    public abstract ILogConsistencyProvider LogConsistencyProvider { get; set; }
+    public abstract IClusterParameter LogConsistencyProvider { get; set; }
     
-    public abstract ClusterParameter StorageProvider { get; set; }
+    public abstract IClusterParameter StorageProvider { get; set; }
 
     private BenchmarkCluster TestCluster { get; set; } = null!;
     
-            
     [GlobalSetup]
     public async Task GlobalSetup()
     {
@@ -34,6 +33,20 @@ public abstract class RaiseEventBenchmark
             LogConsistencyProvider,
             StorageProvider
         );
+    }
+
+    [GlobalCleanup]
+    public async Task GlobalCleanup()
+    {
+        if (LogConsistencyProvider is IAsyncDisposable logConsistencyProvider)
+        {
+            await logConsistencyProvider.DisposeAsync();
+        }
+
+        if (StorageProvider is IAsyncDisposable storageProvider)
+        {
+            await storageProvider.DisposeAsync();
+        }
     }
     
     [Benchmark]
@@ -59,21 +72,21 @@ public abstract class RaiseEventBenchmark
         }
     }
     
-    public class RaiseEventBenchmark_GrainStorageBasedProviders : RaiseEventBenchmark
+    public class GrainStorageBasedProviders : RaiseEventBenchmark
     {
         [ParamsSource(nameof(LogConsistencyProviders))]
-        public override ILogConsistencyProvider LogConsistencyProvider { get; set; } = null!;
+        public override IClusterParameter LogConsistencyProvider { get; set; } = null!;
 
-        public IEnumerable<IGrainStorageBasedLogConsistencyProvider> LogConsistencyProviders() => 
+        public IEnumerable<IClusterParameter> LogConsistencyProviders() => 
         [
             new LogStorageLogConsistencyProvider(),
             new StateStorageLogConsistencyProvider()
         ];
 
         [ParamsSource(nameof(GrainStorageProviders))]
-        public override ClusterParameter StorageProvider { get; set; } = null!;
+        public override IClusterParameter StorageProvider { get; set; } = null!;
 
-        public IEnumerable<IGrainStorageProvider> GrainStorageProviders() =>
+        public IEnumerable<IClusterParameter> GrainStorageProviders() =>
         [
             new MemoryGrainStorageProvider(),
             new RedisGrainStorage(),
@@ -81,20 +94,20 @@ public abstract class RaiseEventBenchmark
         ];
     }
     
-    public class RaiseEventBenchmark_EventStorageBasedProviders : RaiseEventBenchmark
+    public class EventStorageBasedProviders : RaiseEventBenchmark
     {
         [ParamsSource(nameof(LogConsistencyProviders))]
-        public override ILogConsistencyProvider LogConsistencyProvider { get; set; } = null!;
+        public override IClusterParameter LogConsistencyProvider { get; set; } = null!;
 
-        public IEnumerable<IEventStorageLogConsistencyProvider> LogConsistencyProviders() => 
+        public IEnumerable<IClusterParameter> LogConsistencyProviders() => 
         [
             new EventStorageLogConsistencyProvider()
         ];
 
         [ParamsSource(nameof(GrainStorageProviders))]
-        public override ClusterParameter StorageProvider { get; set; } = null!;
+        public override IClusterParameter StorageProvider { get; set; } = null!;
 
-        public IEnumerable<IEventStorageProvider> GrainStorageProviders() =>
+        public IEnumerable<IClusterParameter> GrainStorageProviders() =>
         [
             new MemoryEventStorageProvider(),
             new EventStoreEventStorageProvider(),

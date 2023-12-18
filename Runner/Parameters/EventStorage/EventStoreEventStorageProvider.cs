@@ -1,22 +1,22 @@
 ﻿using EventStore.Client;
-using Orleans.Configuration;
 using Testcontainers.EventStoreDb;
 
-namespace Runner.Cluster.Parameters.EventStorage;
+namespace Runner.Parameters.EventStorage;
 
-public class EventStoreEventStorageProvider : ClusterParameter, IEventStorageProvider
+public class EventStoreEventStorageProvider : IClusterParameter, IAsyncDisposable
 {
     private EventStoreDbContainer? Container { get; set; }
 
-    public override async ValueTask Initialize()
+    public async ValueTask Initialize()
     {
         Container = new EventStoreDbBuilder()
             .WithImage("eventstore/eventstore:lts")
             .Build();
+        
         await Container.StartAsync();
     }
 
-    public override void ConfigureSilo(ISiloBuilder siloBuilder)
+    public void ConfigureSilo(ISiloBuilder siloBuilder)
     {
         siloBuilder.AddEventStoreEventStorageAsDefault(cfg =>
         {
@@ -24,7 +24,7 @@ public class EventStoreEventStorageProvider : ClusterParameter, IEventStoragePro
         });
     }
 
-    public override async ValueTask DisposeAsync()
+    public async ValueTask DisposeAsync()
     {
         if (Container is not null)
         {
@@ -33,8 +33,5 @@ public class EventStoreEventStorageProvider : ClusterParameter, IEventStoragePro
         }
     }
 
-    public override string ToString()
-    {
-        return "EventStore";
-    }
+    public override string ToString() => "EventStore";
 }
