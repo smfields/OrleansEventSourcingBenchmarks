@@ -23,7 +23,7 @@ jobs:
       run: dotnet build
       
     - name: Run Benchmark
-      run: dotnet run --project ./Runner/Runner.csproj --filter * 
+      run: dotnet run --project ./Runner/Runner.csproj --filter '*' 
       
     - name: Upload Results
       uses: actions/upload-artifact@v4
