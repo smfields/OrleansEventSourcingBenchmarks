@@ -34,5 +34,5 @@ jobs:
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        name: ${{ steps.date.outputs.time }}
+        tag_name: ${{ steps.date.outputs.time }}
         files: artifacts/*
