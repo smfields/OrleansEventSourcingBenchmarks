@@ -26,7 +26,7 @@ jobs:
       run: dotnet build
       
     - name: Run Benchmark
-      run: dotnet run --project ./Runner/Runner.csproj --filter "Runner.Benchmarks.LoadGrainBenchmark+EventStorageBasedProviders.LoadGrainFromStorage*Memory*" --job Dry --artifacts artifacts
+      run: dotnet run --project ./Runner/Runner.csproj --filter "*" --artifacts artifacts
       
     - name: Get current date and time
       id: date
