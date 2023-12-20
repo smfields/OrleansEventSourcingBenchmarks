@@ -8,5 +8,5 @@ BenchmarkSwitcher
     .Run(
         args, 
         DefaultConfig.Instance
-                     .AddExporter(JsonExporter.Full)
+                     .AddExporter(JsonExporter.Brief)
     );
