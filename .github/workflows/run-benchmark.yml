@@ -34,13 +34,13 @@ jobs:
       with:
         format: "YYYY-MM-DD-HH.mm.ss"
         
-    - name: Get body text
-      id: body
-      run: echo "BODY_TEXT=$(cat $(ls artifacts/results/*.md))" >> "$GITHUB_OUTPUT"
+    - name: Get body path
+      id: body_path
+      run: echo "BODY_PATH=$(ls artifacts/results/*github.md)" >> "$GITHUB_OUTPUT"
     
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
-        body: ${{ steps.body.outputs.BODY_TEXT }}
+        body_path: ${{ steps.body_path.outputs.BODY_PATH }}
         tag_name: ${{ steps.date.outputs.time }}
         files: artifacts/**/*
