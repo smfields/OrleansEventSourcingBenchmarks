@@ -1,1 +1,1 @@
-﻿
+﻿global using static Runner.Parameters.ParameterConstants;

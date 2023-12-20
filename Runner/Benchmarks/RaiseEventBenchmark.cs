@@ -3,15 +3,12 @@ using Bogus;
 using Runner.Cluster;
 using Runner.Grains;
 using Runner.Parameters;
-using Runner.Parameters.EventStorage;
-using Runner.Parameters.GrainStorage;
-using Runner.Parameters.LogConsistencyProviders;
 
 namespace Runner.Benchmarks;
 
 public abstract class RaiseEventBenchmark
 {
-    [Params(1, 100, 1_000, Priority = -100)]
+    [Params(1, 10, 100, 1_000, Priority = -100)]
     public int NumEvents { get; set; }
     
     [ParamsAllValues(Priority = 100)]
@@ -77,21 +74,12 @@ public abstract class RaiseEventBenchmark
         [ParamsSource(nameof(LogConsistencyProviders))]
         public override IClusterParameter LogConsistencyProvider { get; set; } = null!;
 
-        public IEnumerable<IClusterParameter> LogConsistencyProviders() => 
-        [
-            new LogStorageLogConsistencyProvider(),
-            new StateStorageLogConsistencyProvider()
-        ];
+        public IEnumerable<IClusterParameter> LogConsistencyProviders() => GrainStorageLogConsistencyProviders;
 
-        [ParamsSource(nameof(GrainStorageProviders))]
+        [ParamsSource(nameof(StorageProviders))]
         public override IClusterParameter StorageProvider { get; set; } = null!;
 
-        public IEnumerable<IClusterParameter> GrainStorageProviders() =>
-        [
-            new MemoryGrainStorageProvider(),
-            new RedisGrainStorage(),
-            new PostgresGrainStorage()
-        ];
+        public IEnumerable<IClusterParameter> StorageProviders() => GrainStorageProviders;
     }
     
     public class EventStorageBasedProviders : RaiseEventBenchmark
@@ -99,19 +87,11 @@ public abstract class RaiseEventBenchmark
         [ParamsSource(nameof(LogConsistencyProviders))]
         public override IClusterParameter LogConsistencyProvider { get; set; } = null!;
 
-        public IEnumerable<IClusterParameter> LogConsistencyProviders() => 
-        [
-            new EventStorageLogConsistencyProvider()
-        ];
+        public IEnumerable<IClusterParameter> LogConsistencyProviders() => EventStorageLogConsistencyProviders;
 
-        [ParamsSource(nameof(GrainStorageProviders))]
+        [ParamsSource(nameof(StorageProviders))]
         public override IClusterParameter StorageProvider { get; set; } = null!;
 
-        public IEnumerable<IClusterParameter> GrainStorageProviders() =>
-        [
-            new MemoryEventStorageProvider(),
-            new EventStoreEventStorageProvider(),
-            new MartenEventStorageProvider()
-        ];
+        public IEnumerable<IClusterParameter> StorageProviders() => EventStorageProviders;
     }
 }
