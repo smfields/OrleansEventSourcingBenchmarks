@@ -32,7 +32,7 @@ jobs:
       id: date
       uses: Kaven-Universe/github-action-current-date-time@v1
       with:
-        format: "YYYY.MM.DD.HH:mm:ss"
+        format: "YYYY-MM-DD-HH.mm.ss"
     
     - name: Create Release
       uses: softprops/action-gh-release@v1
