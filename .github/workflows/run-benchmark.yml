@@ -32,10 +32,10 @@ jobs:
       id: date
       uses: Kaven-Universe/github-action-current-date-time@v1
       with:
-        format: "YYYYMMDDHHmmss"
+        format: "YYYY.MM.DD.HH:mm:ss"
     
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ steps.date.outputs.time }}
-        files: artifacts/*
+        files: artifacts/**/*
