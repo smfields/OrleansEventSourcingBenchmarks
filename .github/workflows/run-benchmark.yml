@@ -36,7 +36,7 @@ jobs:
         
     - name: Get body text
       id: body
-      run: echo "BODY_TEXT=$(cat $(ls *.md))" >> "$GITHUB_OUTPUT"
+      run: echo "BODY_TEXT=$(cat $(ls artifacts/results/*.md))" >> "$GITHUB_OUTPUT"
     
     - name: Create Release
       uses: softprops/action-gh-release@v1
