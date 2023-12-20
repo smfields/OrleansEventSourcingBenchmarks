@@ -26,7 +26,7 @@ jobs:
       run: dotnet build
       
     - name: Run Benchmark
-      run: dotnet run --project ./Runner/Runner.csproj --filter "*" --artifacts artifacts --join --job Dry
+      run: dotnet run --project ./Runner/Runner.csproj --filter "*" --artifacts artifacts --join
       
     - name: Get current date and time
       id: date

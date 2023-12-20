@@ -9,7 +9,7 @@ public class PostgresGrainStorage : IClusterParameter
     public async ValueTask Initialize()
     {
         Container = new PostgreSqlBuilder()
-            .WithResourceMapping("Cluster/Parameters/GrainStorage/Scripts/Postgres", "docker-entrypoint-initdb.d")
+            .WithResourceMapping("Parameters/GrainStorage/Scripts/Postgres", "docker-entrypoint-initdb.d")
             .Build();
         
         await Container.StartAsync();

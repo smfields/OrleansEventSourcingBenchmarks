@@ -23,10 +23,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="Cluster\Parameters\GrainStorage\Scripts\Postgres\00-PostgreSQL-Main.sql">
+        <None Update="Parameters\GrainStorage\Scripts\Postgres\00-PostgreSQL-Main.sql">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>       
-        <None Update="Cluster\Parameters\GrainStorage\Scripts\Postgres\01-PostgreSQL-Persistence.sql">
+        <None Update="Parameters\GrainStorage\Scripts\Postgres\01-PostgreSQL-Persistence.sql">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
