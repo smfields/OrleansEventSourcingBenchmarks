@@ -5,7 +5,9 @@ namespace Runner.Grains;
 
 public record ValueUpdatedEvent(string NewValue);
 
-public class StringDataGrainState
+[Serializable]
+[GenerateSerializer]
+public class DataGrainState
 {
     public string Value { get; private set; } = "";
 
@@ -15,7 +17,7 @@ public class StringDataGrainState
     }
 }
 
-public interface IStringDataGrain : IGrainWithGuidKey
+public interface IDataGrain : IGrainWithGuidKey
 {
     public ValueTask Update(string value, bool confirmEvents);
     public ValueTask<string> GetCurrentValue();
@@ -23,7 +25,7 @@ public interface IStringDataGrain : IGrainWithGuidKey
     public Task ConfirmEvents();
 }
 
-public class StringDataGrain : JournaledGrain<StringDataGrainState>, IStringDataGrain
+public class DataGrain : JournaledGrain<DataGrainState>, IDataGrain
 {
     public async ValueTask Update(string value, bool confirmEvents)
     {
@@ -46,8 +48,8 @@ public class StringDataGrain : JournaledGrain<StringDataGrainState>, IStringData
         return ValueTask.CompletedTask;
     }
 
-    Task IStringDataGrain.ConfirmEvents() => ConfirmEvents();
+    Task IDataGrain.ConfirmEvents() => ConfirmEvents();
 }
 
 [Reentrant]
-public class StringDataGrain_Reentrant : StringDataGrain;
+public class DataGrainReentrant : DataGrain;

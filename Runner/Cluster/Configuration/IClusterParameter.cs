@@ -1,4 +1,4 @@
-﻿namespace Runner.Parameters;
+﻿namespace Runner.Cluster.Configuration;
 
 public interface IClusterParameter
 {

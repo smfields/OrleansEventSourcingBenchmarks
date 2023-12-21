@@ -1,7 +1,7 @@
 ﻿using EventStore.Client;
 using Testcontainers.EventStoreDb;
 
-namespace Runner.Parameters.EventStorage;
+namespace Runner.Cluster.Configuration.EventStorageProviders.Orleans_EventSourcing_EventStorage.EventStore;
 
 public class EventStoreEventStorageProvider : IClusterParameter, IAsyncDisposable
 {

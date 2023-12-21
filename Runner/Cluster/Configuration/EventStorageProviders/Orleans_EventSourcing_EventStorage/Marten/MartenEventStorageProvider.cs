@@ -1,6 +1,6 @@
 ﻿using Testcontainers.PostgreSql;
 
-namespace Runner.Parameters.EventStorage;
+namespace Runner.Cluster.Configuration.EventStorageProviders.Orleans_EventSourcing_EventStorage.Marten;
 
 public class MartenEventStorageProvider : IClusterParameter
 {

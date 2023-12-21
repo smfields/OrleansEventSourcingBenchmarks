@@ -1,9 +1,9 @@
 ﻿using StackExchange.Redis;
 using Testcontainers.Redis;
 
-namespace Runner.Parameters.GrainStorage;
+namespace Runner.Cluster.Configuration.GrainStorageProviders.Microsoft_Orleans_Persistence_Redis;
 
-public class RedisGrainStorage : IClusterParameter
+public class RedisGrainStorageProvider : IClusterParameter
 {
     private RedisContainer? Container { get; set; }
     

@@ -1,4 +1,4 @@
-﻿namespace Runner.Parameters.LogConsistencyProviders;
+﻿namespace Runner.Cluster.Configuration.LogConsistencyProviders.BuiltIn;
 
 public class LogStorageLogConsistencyProvider : IClusterParameter
 {

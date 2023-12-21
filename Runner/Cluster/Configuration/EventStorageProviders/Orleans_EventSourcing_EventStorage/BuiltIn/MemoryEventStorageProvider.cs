@@ -1,4 +1,4 @@
-﻿namespace Runner.Parameters.EventStorage;
+﻿namespace Runner.Cluster.Configuration.EventStorageProviders.Orleans_EventSourcing_EventStorage.BuiltIn;
 
 public class MemoryEventStorageProvider : IClusterParameter
 {

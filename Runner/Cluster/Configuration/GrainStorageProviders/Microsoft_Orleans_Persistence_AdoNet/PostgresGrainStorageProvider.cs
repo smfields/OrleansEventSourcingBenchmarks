@@ -1,16 +1,18 @@
 ﻿using Testcontainers.PostgreSql;
 
-namespace Runner.Parameters.GrainStorage;
+namespace Runner.Cluster.Configuration.GrainStorageProviders.Microsoft_Orleans_Persistence_AdoNet;
 
-public class PostgresGrainStorage : IClusterParameter
+public class PostgresGrainStorageProvider : IClusterParameter
 {
     private PostgreSqlContainer? Container { get; set; }
     
     public async ValueTask Initialize()
     {
         Container = new PostgreSqlBuilder()
-            .WithResourceMapping("Parameters/GrainStorage/Scripts/Postgres", "docker-entrypoint-initdb.d")
+            .WithResourceMapping("PostgresScripts", "docker-entrypoint-initdb.d")
             .Build();
+        
+        
         
         await Container.StartAsync();
     }

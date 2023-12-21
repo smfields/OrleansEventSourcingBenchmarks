@@ -23,12 +23,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="Parameters\GrainStorage\Scripts\Postgres\00-PostgreSQL-Main.sql">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>       
-        <None Update="Parameters\GrainStorage\Scripts\Postgres\01-PostgreSQL-Persistence.sql">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
+        <ContentWithTargetPath  Include="Cluster/Configuration/GrainStorageProviders/Microsoft_Orleans_Persistence_AdoNet/Scripts/00-PostgreSQL-Main.sql">
+            <TargetPath>PostgresScripts/00-PostgreSQL-Main.sql</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </ContentWithTargetPath >
+        <ContentWithTargetPath  Include="Cluster/Configuration/GrainStorageProviders/Microsoft_Orleans_Persistence_AdoNet/Scripts/01-PostgreSQL-Persistence.sql">
+            <TargetPath>PostgresScripts/01-PostgreSQL-Persistence.sql</TargetPath>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </ContentWithTargetPath >
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace Runner.Parameters.LogConsistencyProviders;
+﻿namespace Runner.Cluster.Configuration.LogConsistencyProviders.Orleans_EventSourcing_EventStorage;
 
 public class EventStorageLogConsistencyProvider : IClusterParameter
 {

@@ -1,4 +1,4 @@
-﻿namespace Runner.Parameters.GrainStorage;
+﻿namespace Runner.Cluster.Configuration.GrainStorageProviders.BuiltIn;
 
 public class MemoryGrainStorageProvider : IClusterParameter
 {
