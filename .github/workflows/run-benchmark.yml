@@ -32,7 +32,7 @@ jobs:
       run: dotnet build
       
     - name: Run Benchmark
-      run: dotnet run --project ./Runner/Runner.csproj --filter "${{ github.events.inputs.filter }}" --artifacts artifacts --join
+      run: dotnet run --project ./Runner/Runner.csproj --filter "${{ github.event.inputs.filter }}" --artifacts artifacts --join
       
     - name: Get current date and time
       id: date
