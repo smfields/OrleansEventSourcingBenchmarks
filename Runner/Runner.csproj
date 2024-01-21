@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BenchmarkDotNet" Version="0.13.11" />
+        <PackageReference Include="BenchmarkDotNet" Version="0.13.12" />
         <PackageReference Include="Bogus" Version="34.0.2" />
         <PackageReference Include="Microsoft.Orleans.Persistence.AdoNet" Version="7.2.4" />
         <PackageReference Include="Microsoft.Orleans.Persistence.Redis" Version="7.2.4" />
