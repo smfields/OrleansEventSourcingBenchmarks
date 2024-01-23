@@ -1,12 +1,7 @@
 ﻿using System.Reflection;
-using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Exporters.Json;
 using BenchmarkDotNet.Running;
+using Runner.Configuration.Utilities;
 
 BenchmarkSwitcher
     .FromAssembly(Assembly.GetExecutingAssembly())
-    .Run(
-        args, 
-        DefaultConfig.Instance
-                     .AddExporter(JsonExporter.Brief)
-    );
+    .Run(args, ConfigurationHelpers.GetBenchmarkConfig());

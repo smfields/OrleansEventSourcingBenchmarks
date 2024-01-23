@@ -1,0 +1,9 @@
+﻿{
+  "LogConsistencyProvider": "LogStorage",
+  "GrainStorageProvider": {
+    "Type": "Memory",
+    "Subclass": {
+      "SubProperty": "ValueOfProperty"
+    }
+  }
+}
