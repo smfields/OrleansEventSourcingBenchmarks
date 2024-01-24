@@ -7,7 +7,7 @@ namespace Runner.Configuration.Utilities;
 
 public static class ParameterHelpers
 {
-    public static IEnumerable<object> BuildParametersFromConfig(IConfiguration configuration, Assembly? assembly = null)
+    public static IEnumerable<object> BuildParametersFromConfig(IConfigurationRoot configuration, Assembly? assembly = null)
     {
         var parameters = GetAllParameters(assembly);
         

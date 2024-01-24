@@ -1,9 +1,9 @@
-﻿using BenchmarkDotNet.Columns;
-using BenchmarkDotNet.Configs;
-using BenchmarkDotNet.Exporters.Json;
-using BenchmarkDotNet.Jobs;
-using BenchmarkDotNet.Loggers;
+﻿using BenchmarkDotNet.Configs;
 using Microsoft.Extensions.Configuration;
+
+#if DEBUG
+using BenchmarkDotNet.Jobs;
+#endif
 
 namespace Runner.Configuration.Utilities;
 
@@ -14,13 +14,12 @@ public static class ConfigurationHelpers
 #if DEBUG
         return new InProcessDebugConfig();
 #endif
-        
+
         return DefaultConfig.Instance
-            .AddExporter(JsonExporter.Default)
-            .AddColumn(new TagColumn("Parameters", _ => "Test"));
+            .AddExporter(new CustomJsonExporter());
     }
 
-    public static IConfiguration LoadConfigurationFromFile()
+    public static IConfigurationRoot LoadConfigurationFromFile()
     {
         var filePath = Environment.GetEnvironmentVariable("PARAMETER_FILE");
         if (filePath is null)
@@ -34,20 +33,12 @@ public static class ConfigurationHelpers
     }
     
 #if DEBUG
-        public class InProcessDebugConfig : ManualConfig
+    public class InProcessDebugConfig : DebugConfig
+    {
+        public override IEnumerable<Job> GetJobs()
         {
-            public InProcessDebugConfig()
-            {
-                AddLogger(ConsoleLogger.Default);
-                AddColumnProvider(DefaultColumnProviders.Instance);
-                AddJob(Job.Dry);
-                AddColumn(new TagColumn("MyCustomColumn", s => s));
-            }
-            
-            // public override IEnumerable<Job> GetJobs()
-            // {
-            //     yield return Job.InProcess;
-            // }
+            yield return Job.InProcess;
         }
+    }
 #endif
 }
