@@ -1,9 +1,10 @@
 ﻿using BenchmarkDotNet.Attributes;
 using Bogus;
+using Runner.Grains;
 
-namespace Runner.Benchmarks.BlogPost;
+namespace Runner.Benchmarks;
 
-public class LoadBlogPostBenchmark : OrleansBenchmark
+public class LoadBlogBenchmark : OrleansBenchmark
 {
     [Params(50, 5_000, 50_000)]
     public int ContentLength { get; set; }
@@ -11,21 +12,26 @@ public class LoadBlogPostBenchmark : OrleansBenchmark
     [Params(10, 1_000, 10_000)]
     public int NumComments { get; set; }
     
-    private Guid ExistingGrainId { get; } = Guid.NewGuid();
+    protected Guid ExistingGrainId { get; } = Guid.NewGuid();
+    protected Faker Faker { get; } = new();
 
+    protected virtual IBlogPostGrain GetGrainReference()
+    {
+        return Cluster.GrainFactory.GetGrain<IBlogPostGrain>(ExistingGrainId);
+    }
+    
     public override async Task GlobalSetup()
     {
         await base.GlobalSetup();
         
         // Setup existing grain
-        var faker = new Faker();
-        var grain = Cluster.GrainFactory.GetGrain<IBlogPostGrain>(ExistingGrainId);
+        var grain = GetGrainReference();
         
-        var content = string.Join(" ", faker.Lorem.Words(ContentLength));
+        var content = string.Join(" ", Faker.Lorem.Words(ContentLength));
         await grain.Create(content);
         
         var comments = Enumerable.Range(0, NumComments)
-            .Select(_ => faker.Lorem.Sentence())
+            .Select(_ => Faker.Lorem.Sentence())
             .Select(comment => grain.AddComment(comment))
             .Select(valueTask => valueTask.AsTask());
         await Task.WhenAll(comments);
@@ -34,7 +40,7 @@ public class LoadBlogPostBenchmark : OrleansBenchmark
     }
 
     [Benchmark]
-    public async ValueTask LoadGrainFromStorage()
+    public async ValueTask LoadGrain()
     {
         var grain = Cluster.GrainFactory.GetGrain<IBlogPostGrain>(ExistingGrainId);
         await grain.Deactivate();

@@ -1,6 +1,7 @@
-﻿using Orleans.Runtime;
+﻿using Orleans.Concurrency;
+using Orleans.Runtime;
 
-namespace Runner.Benchmarks.BlogPost;
+namespace Runner.Grains;
 
 public interface IBlogPostGrain : IGrainWithGuidKey
 {
@@ -127,3 +128,6 @@ public class BlogPostGrain(IPersistentState<BlogPostGrainState> state) : Grain, 
         }
     }
 }
+
+[Reentrant]
+public class ReentrantBlogPostGrain(IPersistentState<BlogPostGrainState> state) : BlogPostGrain(state);
