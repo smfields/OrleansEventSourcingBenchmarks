@@ -21,7 +21,7 @@ public class AddCommentBenchmark : OrleansBenchmark
     {
         return Cluster.GrainFactory.GetGrain<IBlogPostGrain>(
             Guid.NewGuid(),
-            grainClassNamePrefix: Reentrant ? "Runner.Grains.ReentrantBlogPostGrain" : "Runner.Grains.BlogPostGrain"
+            grainClassNamePrefix: Reentrant ? "Runner.Grains.BlogPostGrain_Reentrant" : "Runner.Grains.BlogPostGrain"
         );
     }
 
@@ -33,7 +33,7 @@ public class AddCommentBenchmark : OrleansBenchmark
     }
     
     [Benchmark]
-    public async ValueTask RaiseEvents()
+    public async ValueTask AddComments()
     {
         var grain = await CreateGrain();
         

@@ -130,4 +130,4 @@ public class BlogPostGrain(IPersistentState<BlogPostGrainState> state) : Grain, 
 }
 
 [Reentrant]
-public class ReentrantBlogPostGrain(IPersistentState<BlogPostGrainState> state) : BlogPostGrain(state);
+public class BlogPostGrain_Reentrant(IPersistentState<BlogPostGrainState> state) : BlogPostGrain(state);

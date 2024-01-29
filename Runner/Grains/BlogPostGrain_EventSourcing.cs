@@ -1,7 +1,7 @@
 ﻿using Orleans.Concurrency;
 using Orleans.EventSourcing;
 
-namespace Runner.Grains.EventSourcing;
+namespace Runner.Grains;
 
 public record BlogCreatedEvent(string Content);
 public record BlogCommentAddedEvent(string Comment);
@@ -11,7 +11,7 @@ public record BlogDislikedEvent;
 
 [Serializable]
 [GenerateSerializer]
-public class JournaledBlogPostGrainState
+public class BlogPostGrain_EventSourcingState
 {
     [Id(0)]
     public bool Created { get; private set; } = false;
@@ -46,7 +46,7 @@ public class JournaledBlogPostGrainState
     }
 }
 
-public class JournaledBlogPostGrain : JournaledGrain<JournaledBlogPostGrainState>, IBlogPostGrain
+public class BlogPostGrain_EventSourcing : JournaledGrain<BlogPostGrain_EventSourcingState>, IBlogPostGrain
 {
     public async ValueTask Create(string content)
     {
@@ -143,4 +143,4 @@ public class JournaledBlogPostGrain : JournaledGrain<JournaledBlogPostGrainState
 }
 
 [Reentrant]
-public class ReentrantJournaledBlogPostGrain : JournaledBlogPostGrain;
+public class BlogPostGrain_EventSourcing_Reentrant : BlogPostGrain_EventSourcing;

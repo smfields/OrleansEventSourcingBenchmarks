@@ -1,14 +1,14 @@
 ﻿using Runner.Grains;
 
-namespace Runner.Benchmarks.EventSourcing;
+namespace Runner.Benchmarks;
 
-public class EventSourcing_LoadBlogBenchmark : LoadBlogBenchmark
+public class LoadBlogBenchmark_EventSourcing : LoadBlogBenchmark
 {
     protected override IBlogPostGrain GetGrainReference()
     {
         return Cluster.GrainFactory.GetGrain<IBlogPostGrain>(
             ExistingGrainId,
-            "Runner.Grains.EventSourcing.JournaledBlogPostGrain"
+            "Runner.Grains.BlogPostGrain_EventSourcing"
         );
     }
 }

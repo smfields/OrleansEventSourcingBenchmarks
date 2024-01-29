@@ -7,14 +7,19 @@ namespace Runner.Benchmarks;
 
 public abstract class OrleansBenchmark
 {
+    public object[] Parameters { get; set; } = null!;
+    
     protected TestCluster Cluster { get; private set; } = null!;
-    private object[] Parameters { get; set; } = null!;
     
     [GlobalSetup]
     public virtual async Task GlobalSetup()
     {
-        var config = ConfigurationHelpers.LoadConfigurationFromFile();
-        Parameters = ParameterHelpers.BuildParametersFromConfig(config).ToArray();
+        if (Parameters is null)
+        {
+            var config = ConfigurationFileHelpers.LoadConfigurationFromFile();
+            Parameters = ParameterHelpers.BuildParametersFromConfig(config).ToArray();
+        }
+        
         Cluster = await TestClusterFactory.CreateTestCluster(parameters: Parameters);
     }
     
