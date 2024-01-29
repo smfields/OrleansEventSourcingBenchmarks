@@ -1,4 +1,5 @@
-﻿using BenchmarkDotNet.Attributes;
+﻿using System.Diagnostics;
+using BenchmarkDotNet.Attributes;
 using Orleans.TestingHost;
 using Runner.Cluster;
 using Runner.Configuration.Utilities;
@@ -10,6 +11,18 @@ public abstract class OrleansBenchmark
     public object[] Parameters { get; set; } = null!;
     
     protected TestCluster Cluster { get; private set; } = null!;
+
+    public OrleansBenchmark()
+    {
+        if (Environment.GetEnvironmentVariable("Debugging") == bool.TrueString)
+        {
+            Console.WriteLine("Waiting for debugger to attach...");
+            while (!Debugger.IsAttached)
+            {
+                Thread.Sleep(100);
+            }
+        }
+    }
     
     [GlobalSetup]
     public virtual async Task GlobalSetup()

@@ -1,15 +1,13 @@
-﻿using System.Reflection;
-using BenchmarkDotNet.Running;
-
-#if DEBUG
-var benchmarkConfig = new InProcessDebugConfig();
-#else
+﻿using System.Diagnostics;
+using System.Reflection;
 using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Running;
 using Runner.BenchmarkConfig;
 
 var benchmarkConfig = DefaultConfig.Instance
-    .AddExporter(new CustomJsonExporter());
-#endif
+    .AddExporter(new CustomJsonExporter())
+    .AddJob(Job.Default.WithEnvironmentVariable("Debugging", Debugger.IsAttached.ToString()));
 
 BenchmarkSwitcher
     .FromAssembly(Assembly.GetExecutingAssembly())
